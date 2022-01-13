@@ -18,24 +18,23 @@ class Despesa {
     }
 }
 
-if(localStorage.length == 0) {
-    var id = 0
-} else {
-    var id = Number(localStorage.getItem('Último id')) + 1
-}
-
-
 class Bd {
+    constructor() {
+        if(localStorage.length == 0) {
+            this.id = 0
+        } else {
+            this.id = Number(localStorage.getItem('Último id')) + 1
+        }
+    }
     gravarRegistros(despesa) {
-        localStorage.setItem(id.toString(), JSON.stringify(despesa))
-        localStorage.setItem("Último id", id)
-        id++
+        localStorage.setItem(this.id.toString(), JSON.stringify(despesa))
+        localStorage.setItem("Último id", this.id)
+        this.id++
     }
 
     recuperarRegistros() {
         let despesas = Array()
-        //let ultimoId = localStorage.getItem('Último id')
-        for (let i = 0; i <= id; i++) {
+        for (let i = 0; i <= this.id; i++) {
             let despesa = JSON.parse(localStorage.getItem(i))
             if(despesa === null) {
                 continue
@@ -68,12 +67,12 @@ function cadastrarDespesa() {
 }
 
 function limparCampos() {
-    /* ano.value = '' 
+    ano.value = '' 
     mes.value = '' 
     dia.value = ''
     tipo.value = ''
     descricao.value = '' 
-    valor.value = '' */
+    valor.value = ''
 }
 
 function mostrarModal(msg) {

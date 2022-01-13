@@ -10,10 +10,10 @@
     <!-- Font Awesome -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <!-- Script -->
-    <script onload="carregarDespesas()"src="script.js"></script>
+    <script src="script.js"></script>
     <title>Orçamento Pessoal</title>
 </head>
-<body >
+<body onload="carregarDespesas()">
     <header class="bg-primary">
         <nav class="navbar navbar-expand-md navbar-dark container">
             <div class="container-fluid">
@@ -106,6 +106,7 @@
                 <th scope="col"></th>
               </tr>
             </thead>
+            <tbody id="corpo-tabela"></tbody>
           </table>
     </div>
 

@@ -1,5 +1,3 @@
-let id = 0
-
 class Despesa {
     constructor(ano, mes, dia, tipo, descricao, valor) {
         this.ano = ano
@@ -20,7 +18,14 @@ class Despesa {
     }
 }
 
+let id = 0
 class Bd {
+    gravarRegistros(despesa) {
+        localStorage.setItem(id.toString(), JSON.stringify(despesa))
+        localStorage.setItem("Último id", id)
+        id++
+    }
+
     recuperarRegistros() {
         let despesas = Array()
         let ultimoId = localStorage.getItem('Último id')
@@ -50,9 +55,7 @@ function cadastrarDespesa() {
 
     if(despesa.validarDados()) {
         mostrarModal('sucesso')
-        localStorage.setItem(id.toString(), JSON.stringify(despesa))
-        localStorage.setItem("Último id", id)
-        id++
+        bd.gravarRegistros(despesa)
     } else {
         mostrarModal('erro')
     }
@@ -83,6 +86,28 @@ function mostrarModal(msg) {
 function carregarDespesas() {
     let despesas = Array()
     despesas = bd.recuperarRegistros()
-    console.log(despesas)
-}
 
+    //inserir dados na tabela:
+    const tabela = document.querySelector('#corpo-tabela')
+
+    despesas.forEach((d) => {
+        let linha = tabela.insertRow()
+        let dia = d.dia < 10 ? `0${d.dia}` : d.dia
+        let mes = d.mes < 10 ? `0${d.mes}` : d.mes
+        linha.insertCell(0).innerHTML = `${dia}/${mes}/${d.ano}`
+        linha.insertCell(1).innerHTML = verificarTipo(d.tipo)
+        linha.insertCell(2).innerHTML = d.descricao
+        linha.insertCell(3).innerHTML = d.valor
+
+    })
+
+    function verificarTipo(tipo) {
+        switch (tipo) {
+            case '1': return 'Alimentacao'
+            case '2': return 'Educacao';
+            case '3': return 'Lazer' ;
+            case '4': return 'Saúde';
+            case '5': return 'Transporte';
+        }
+    }
+} 

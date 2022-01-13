@@ -18,7 +18,13 @@ class Despesa {
     }
 }
 
-let id = 0
+if(localStorage.length == 0) {
+    var id = 0
+} else {
+    var id = Number(localStorage.getItem('Último id')) + 1
+}
+
+
 class Bd {
     gravarRegistros(despesa) {
         localStorage.setItem(id.toString(), JSON.stringify(despesa))
@@ -28,8 +34,8 @@ class Bd {
 
     recuperarRegistros() {
         let despesas = Array()
-        let ultimoId = localStorage.getItem('Último id')
-        for (let i = 0; i <= ultimoId; i++) {
+        //let ultimoId = localStorage.getItem('Último id')
+        for (let i = 0; i <= id; i++) {
             let despesa = JSON.parse(localStorage.getItem(i))
             if(despesa === null) {
                 continue
@@ -39,7 +45,6 @@ class Bd {
         return despesas
     }
 }
-
 let bd = new Bd()
 
 function cadastrarDespesa() {
@@ -56,9 +61,19 @@ function cadastrarDespesa() {
     if(despesa.validarDados()) {
         mostrarModal('sucesso')
         bd.gravarRegistros(despesa)
+        limparCampos()
     } else {
         mostrarModal('erro')
     }
+}
+
+function limparCampos() {
+    /* ano.value = '' 
+    mes.value = '' 
+    dia.value = ''
+    tipo.value = ''
+    descricao.value = '' 
+    valor.value = '' */
 }
 
 function mostrarModal(msg) {
@@ -94,6 +109,7 @@ function carregarDespesas() {
         let linha = tabela.insertRow()
         let dia = d.dia < 10 ? `0${d.dia}` : d.dia
         let mes = d.mes < 10 ? `0${d.mes}` : d.mes
+
         linha.insertCell(0).innerHTML = `${dia}/${mes}/${d.ano}`
         linha.insertCell(1).innerHTML = verificarTipo(d.tipo)
         linha.insertCell(2).innerHTML = d.descricao
